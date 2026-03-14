@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Schola Palette - Calm Blue #5BA4FC */
+  --primary: 213 97% 67%;
+  --primary-foreground: 224 64% 15%;
+
+  /* Softer Dark Theme */
+  --background: 224 60% 4%;
+  --foreground: 210 40% 98%;
+  --card: 224 60% 8%;
+  --card-foreground: 210 40% 98%;
+  --popover: 224 60% 8%;
+  --popover-foreground: 210 40% 98%;
+  --secondary: 224 60% 14%;
+  --secondary-foreground: 213 97% 67%;
+  --muted: 224 60% 14%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 340 82% 85%; /* Soft Pastel Pink #F8BBD0 */
+  --accent-foreground: 340 50% 20%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 224 60% 18%;
+  --input: 224 60% 18%;
+  --ring: 213 97% 67%;
+  --radius: 0.75rem;
+
+  --sidebar-width: 270px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 64px;
+
+  --glass-bg: rgba(10, 15, 30, 0.82);
+  --glass-border: rgba(91, 164, 252, 0.2);
+  --glass-shadow: 0 15px 45px 0 rgba(0, 0, 0, 0.3);
+  --shadow-premium: 0 10px 40px -15px rgba(0, 0, 0, 0.4);
+}
+
+.light-theme {
+  /* Schola Palette - Light & Welcoming */
+  --background: 0 0% 100%; /* Pure White Base */
+  --foreground: 224 64% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 64% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 64% 15%;
+  --primary: 213 97% 67%; /* Calm Blue */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 213 97% 96%; /* Very light blue tint */
+  --secondary-foreground: 213 97% 40%;
+  --muted: 340 82% 98%; /* Pale Pink tint for muted */
+  --muted-foreground: 224 20% 45%;
+  --accent: 340 82% 85%; /* pastel pink */
+  --accent-foreground: 340 40% 25%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 213 30% 93%;
+  --input: 213 30% 93%;
+  --ring: 213 97% 67%;
+
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(91, 164, 252, 0.15);
+  --glass-shadow: 0 10px 30px 0 rgba(91, 164, 252, 0.05);
+  --shadow-premium: 0 12px 40px -20px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.border-glass {
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Premium Toggle Switch */
+.premium-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.premium-toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.premium-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: hsl(var(--muted));
+  transition: .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  border-radius: 24px;
+  border: 1px solid hsl(var(--border));
+}
+
+.premium-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: hsl(var(--card));
+  transition: .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.premium-toggle-input:checked+.premium-toggle-slider {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.premium-toggle-input:focus+.premium-toggle-slider {
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+}
+
+.premium-toggle-input:checked+.premium-toggle-slider:before {
+  transform: translateX(20px);
+}
