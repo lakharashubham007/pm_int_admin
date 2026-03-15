@@ -38,12 +38,12 @@ import VendorEditProduct from "../pages/vendors/products/VendorEditProduct";
 import VendorOrders from "../pages/vendors/orders/VendorOrders";
 
 import CMSPage from "../pages/CMS/CMSPage";
-import HeroSection from "../pages/cms/HeroSection";
-import AboutSection from "../pages/cms/AboutSection";
-import GallerySection from "../pages/cms/GallerySection";
-import ContactSection from "../pages/cms/ContactSection";
-import ManageFacilities from "../pages/cms/ManageFacilities";
-import ManageAdmissions from "../pages/cms/ManageAdmissions";
+import HeroSection from "../pages/CMS/HeroSection";
+import AboutSection from "../pages/CMS/AboutSection";
+import GallerySection from "../pages/CMS/GallerySection";
+import ContactSection from "../pages/CMS/ContactSection";
+import ManageFacilities from "../pages/CMS/ManageFacilities";
+import ManageAdmissions from "../pages/CMS/ManageAdmissions";
 import Settings from "../pages/settings/Settings";
 import ComingSoon from "../pages/ComingSoon";
 
