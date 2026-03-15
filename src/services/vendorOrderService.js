@@ -1,22 +1,22 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const vendorOrderService = {
     async getVendorOrders(params) {
         const query = new URLSearchParams(params).toString();
-        return apiClient(`/private/orders/vendor-order/orders?${query}`);
+        return apiClient(`${API_URL}/private/orders/vendor-order/orders?${query}`);
     },
 
     async updateOrderStatus(orderId, status) {
-        return apiClient(`/private/orders/vendor-order/orders/${orderId}/status`, {
+        return await apiClient(`${API_URL}/private/vendor-orders/${orderId}/status`, {
             method: 'PATCH',
-            body: { status }
+            data: { status }
         });
     },
 
     async getOrderById(orderId, params = {}) {
         const query = new URLSearchParams(params).toString();
-        const url = `/private/orders/vendor-order/orders/${orderId}${query ? '?' + query : ''}`;
-        return apiClient(url);
+        const url = `${API_URL}/private/orders/vendor-order/orders/${orderId}${query ? '?' + query : ''}`;
+        return await apiClient(url);
     }
 };
 

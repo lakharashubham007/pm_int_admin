@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const galleryService = {
     getGalleryItems: async (params = {}) => {
         try {
-            return await apiClient.get('/gallery', { params });
+            return await apiClient.get(`${API_URL}/gallery`, { params });
         } catch (error) {
             throw error;
         }
@@ -11,7 +11,7 @@ const galleryService = {
 
     createGalleryItem: async (formData) => {
         try {
-            return await apiClient.post('/gallery', formData);
+            return await apiClient.post(`${API_URL}/gallery`, formData);
         } catch (error) {
             throw error;
         }
@@ -19,7 +19,7 @@ const galleryService = {
 
     updateGalleryItem: async (id, formData) => {
         try {
-            return await apiClient.put(`/gallery/${id}`, formData);
+            return await apiClient.put(`${API_URL}/gallery/${id}`, formData);
         } catch (error) {
             throw error;
         }
@@ -27,7 +27,7 @@ const galleryService = {
 
     deleteGalleryItem: async (id) => {
         try {
-            return await apiClient.delete(`/gallery/${id}`);
+            return await apiClient.delete(`${API_URL}/gallery/${id}`);
         } catch (error) {
             throw error;
         }
@@ -35,7 +35,7 @@ const galleryService = {
 
     toggleStatus: async (id) => {
         try {
-            return await apiClient.patch(`/gallery/${id}/status`);
+            return await apiClient.patch(`${API_URL}/gallery/${id}/status`);
         } catch (error) {
             throw error;
         }

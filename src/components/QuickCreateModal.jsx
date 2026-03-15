@@ -6,7 +6,7 @@ import productService from '../services/productService';
 import CustomSelect from './CustomSelect';
 import PillSlider from './PillSlider';
 import { ShoppingCart, UtensilsCrossed } from 'lucide-react';
-import { useMasterCategory } from '../context/MasterCategoryContext';
+import masterCategoryStore from '../store/masterCategoryStore';
 import './QuickCreateModal.css';
 
 
@@ -23,8 +23,7 @@ const QuickCreateModal = ({ isOpen, onClose, type, onSuccess, masters = {}, edit
     const [categoryId, setCategoryId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     // Read global masterCategory to initialize — stays in sync with the current theme
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
-    const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
+    const [masterCategory, setMasterCategory] = useState(masterCategoryStore.getState().masterCategory);
     const [localCategories, setLocalCategories] = useState([]);
 
     // Variant Specific State
@@ -70,7 +69,7 @@ const QuickCreateModal = ({ isOpen, onClose, type, onSuccess, masters = {}, edit
             // Reset for create mode — inherit the current global master category theme
             setName('');
             setShortName('');
-            setMasterCategory(masters?.masterCategory || globalMasterCategory);
+            setMasterCategory(masters?.masterCategory || masterCategoryStore.getState().masterCategory);
 
             setImage(null);
             setExistingImage(null);

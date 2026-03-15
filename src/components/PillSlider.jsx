@@ -1,5 +1,4 @@
-import React from 'react';
-import { useMasterCategory } from '../context/MasterCategoryContext';
+import masterCategoryStore from '../store/masterCategoryStore';
 
 // Food option color constant — single source of truth
 export const FOOD_THEME_COLOR = '#fe6b35';
@@ -13,7 +12,6 @@ const PillSlider = ({ options, value, onChange, themeColor = 'hsl(var(--primary)
 
     // Auto-detect if this PillSlider is acting as a masterCategory selector
     const isMasterCategorySider = normalizedOptions.every(opt => MASTER_CATEGORY_VALUES.includes(opt.value));
-    const masterCategoryCtx = (() => { try { return useMasterCategory(); } catch { return null; } })();
 
     const activeIndex = normalizedOptions.findIndex(opt => opt.value === value);
     const activeOption = normalizedOptions[activeIndex] || normalizedOptions[0];
@@ -31,8 +29,8 @@ const PillSlider = ({ options, value, onChange, themeColor = 'hsl(var(--primary)
 
     const handleChange = (val) => {
         // Auto-sync to global theme if this is a masterCategory slider
-        if (isMasterCategorySider && masterCategoryCtx) {
-            masterCategoryCtx.setMasterCategory(val);
+        if (isMasterCategorySider) {
+            masterCategoryStore.setMasterCategory(val);
         }
         onChange(val);
     };

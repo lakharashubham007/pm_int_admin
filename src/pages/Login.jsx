@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useMemo, useEffect } from 'react';
+import authStore from '../store/authStore';
+import themeStore from '../store/themeStore';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, Loader2, Sparkles, Zap, GraduationCap, BookOpen, User as UserIcon, Building2, ChevronDown, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, Loader2, Sparkles, Zap, GraduationCap, BookOpen, User as UserIcon, Building2, ShieldCheck, Sun, Moon } from 'lucide-react';
 import './Login.css';
 
 const Login = () => {
@@ -12,8 +13,14 @@ const Login = () => {
 
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [themeState, setThemeState] = useState(themeStore.getState());
 
-    const { login } = useAuth();
+    useEffect(() => {
+        const unsubscribe = themeStore.subscribe(setThemeState);
+        return unsubscribe;
+    }, []);
+
+    const { theme } = themeState;
     const navigate = useNavigate();
 
     // Memoize background elements data once to keep animations stable during re-renders
@@ -41,7 +48,7 @@ const Login = () => {
         setError('');
         setIsLoading(true);
         try {
-            await login(formData.email, formData.password);
+            await authStore.login(formData.email, formData.password);
             navigate('/');
         } catch (err) {
             setError(err.message || 'Authentication failed. Please check your credentials.');
@@ -107,6 +114,28 @@ const Login = () => {
                                 <div className="sparkle-overlay"><Sparkles size={16} /></div>
                             </div>
                             <div className="brand-glow"></div>
+                        </div>
+                        <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
+                            <button
+                                type="button"
+                                className="icon-button theme-toggle"
+                                onClick={() => themeStore.toggleTheme()}
+                                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                                style={{
+                                    background: 'hsla(var(--primary), 0.1)',
+                                    color: 'hsla(var(--primary), 1)',
+                                    border: '1px solid hsla(var(--primary), 0.2)',
+                                    borderRadius: '12px',
+                                    width: '44px',
+                                    height: '44px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.3s ease'
+                                }}
+                            >
+                                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                            </button>
                         </div>
                         <h1 className="premium-title">PM International School Admin</h1>
                         <p className="premium-subtitle" style={{ marginBottom: '8px' }}>

@@ -14,7 +14,7 @@
     animation: modalFadeIn 0.2s ease-out forwards;
 }
 
-.light-theme .quick-modal-overlay {
+.light .quick-modal-overlay {
     background: rgba(0, 0, 0, 0.6);
 }
 

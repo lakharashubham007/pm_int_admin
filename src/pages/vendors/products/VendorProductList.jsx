@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
     Search, Plus, Filter, Edit, Trash2, Package,
@@ -12,7 +12,7 @@ import productService from '../../../services/productService'; // For masters (c
 import Loader from '../../../components/Loader';
 import CustomSelect from '../../../components/CustomSelect';
 import PillSlider from '../../../components/PillSlider';
-import { useMasterCategory } from '../../../context/MasterCategoryContext';
+import masterCategoryStore from '../../../store/masterCategoryStore';
 import SafeImage from '../../../components/SafeImage';
 import '../../products/Product.css';
 
@@ -56,7 +56,14 @@ const unitAwareSort = (a, b) => {
 
 const VendorProductList = () => {
     const { vendorId } = useParams();
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory: globalMasterCategory } = mcState;
+
+    useEffect(() => {
+        const unsub = masterCategoryStore.subscribe(setMcState);
+        return unsub;
+    }, []);
+
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [masters, setMasters] = useState({ categories: [], brands: [] });
@@ -69,6 +76,10 @@ const VendorProductList = () => {
         masterCategory: globalMasterCategory,
         vendorId: vendorId || ''
     });
+
+    useEffect(() => {
+        setFilters(prev => ({ ...prev, masterCategory: globalMasterCategory }));
+    }, [globalMasterCategory]);
     const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0 });
     const [isRowsDropdownOpen, setIsRowsDropdownOpen] = useState(false);
     const [expandedRows, setExpandedRows] = useState({});

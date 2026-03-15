@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Shield, Save, Key, Camera, ArrowLeft, Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import authStore from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import * as authService from '../services/authService';
@@ -9,7 +9,15 @@ import './Profile.css';
 import Loader from '../components/Loader';
 
 const Profile = () => {
-    const { user, setUser } = useAuth();
+    const [authState, setAuthState] = useState(authStore.getState());
+    const { user } = authState;
+    const setUser = (user) => authStore.setUser(user);
+
+    useEffect(() => {
+        const unsubscribe = authStore.subscribe(setAuthState);
+        return unsubscribe;
+    }, []);
+
     const navigate = useNavigate();
 
     const [isSavingProfile, setIsSavingProfile] = useState(false);

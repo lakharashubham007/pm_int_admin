@@ -1,10 +1,15 @@
-import React from 'react';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from 'react';
+import authStore from '../store/authStore';
 import SuperAdminDashboard from './SuperAdminDashboard';
 
 const Dashboard = () => {
-    const { user } = useAuth();
-    // Default to SuperAdminDashboard for school admins.
+    const [authState, setAuthState] = useState(authStore.getState());
+
+    useEffect(() => {
+        return authStore.subscribe(setAuthState);
+    }, []);
+
+    const { user } = authState;
     return <SuperAdminDashboard user={user} />;
 };
 

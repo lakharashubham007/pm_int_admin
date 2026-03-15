@@ -1,14 +1,14 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const settingService = {
     getSettings: async (key = '') => {
-        return await apiClient(`/private/settings${key ? `?key=${key}` : ''}`);
+        return await apiClient(`${API_URL}/private/settings${key ? `?key=${key}` : ''}`);
     },
 
     updateSetting: async (settingData) => {
-        return await apiClient('/private/settings', {
+        return await apiClient(`${API_URL}/private/settings`, {
             method: 'POST',
-            body: settingData
+            data: settingData
         });
     }
 };

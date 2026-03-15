@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Search, Plus, Filter, Edit, Trash2, Package,
@@ -11,7 +11,7 @@ import productService from '../../services/productService';
 import Loader from '../../components/Loader';
 import CustomSelect from '../../components/CustomSelect';
 import PillSlider from '../../components/PillSlider';
-import { useMasterCategory } from '../../context/MasterCategoryContext';
+import masterCategoryStore from '../../store/masterCategoryStore';
 import { ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import SafeImage from '../../components/SafeImage';
 import './Product.css';
@@ -54,7 +54,9 @@ const unitAwareSort = (a, b) => {
 };
 
 const ListProducts = () => {
-    const { masterCategory } = useMasterCategory();
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory } = mcState;
+
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [masters, setMasters] = useState({ categories: [], brands: [] });
@@ -192,8 +194,7 @@ const ListProducts = () => {
                             ]}
                             value={filters.masterCategory}
                             onChange={(val) => {
-                                console.log('Master Category changed to:', val);
-                                setFilters(prev => ({ ...prev, masterCategory: val, page: 1 }));
+                                masterCategoryStore.setMasterCategory(val);
                             }}
                             themeColor="hsl(var(--primary))"
                         />

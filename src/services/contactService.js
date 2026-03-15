@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const contactService = {
-    getContact: () => apiClient.get('/contact'),
+    getContact: () => apiClient.get(`${API_URL}/contact`),
 
-    updateContact: (data) => apiClient.post('/contact', data)
+    updateContact: (data) => apiClient.post(`${API_URL}/contact`, data)
 };
 
 export default contactService;

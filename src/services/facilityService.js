@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const facilityService = {
     getFacilities: async () => {
         try {
-            return await apiClient.get('/facilities');
+            return await apiClient.get(`${API_URL}/facilities`);
         } catch (error) {
             throw error;
         }
@@ -11,7 +11,7 @@ const facilityService = {
 
     createFacility: async (data) => {
         try {
-            return await apiClient.post('/facilities', data);
+            return await apiClient.post(`${API_URL}/facilities`, data);
         } catch (error) {
             throw error;
         }
@@ -19,7 +19,7 @@ const facilityService = {
 
     updateFacility: async (id, data) => {
         try {
-            return await apiClient.put(`/facilities/${id}`, data);
+            return await apiClient.put(`${API_URL}/facilities/${id}`, data);
         } catch (error) {
             throw error;
         }
@@ -27,7 +27,7 @@ const facilityService = {
 
     deleteFacility: async (id) => {
         try {
-            return await apiClient.delete(`/facilities/${id}`);
+            return await apiClient.delete(`${API_URL}/facilities/${id}`);
         } catch (error) {
             throw error;
         }

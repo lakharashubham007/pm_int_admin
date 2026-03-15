@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Save, Loader } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import authStore from '../../store/authStore';
 import { Navigate } from 'react-router-dom';
 import settingService from '../../services/settingService';
 import '../employee/Employee.css';
 import './Settings.css';
 
 const Settings = () => {
-    const { user } = useAuth();
+    const { user } = authStore.getState();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     

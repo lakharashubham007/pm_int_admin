@@ -11,12 +11,12 @@ import vendorService from '../../../services/vendorService';
 import Loader from '../../../components/Loader';
 import CustomSelect from '../../../components/CustomSelect';
 import PillSlider from '../../../components/PillSlider';
-import { useAuth } from '../../../context/AuthContext';
+import authStore from '../../../store/authStore';
 import OrderDetailsModal from './OrderDetailsModal';
 import '../../products/Product.css'; // Reusing product table CSS
 
 const VendorOrders = () => {
-    const { user } = useAuth();
+    const { user } = authStore.getState();
     const queryParams = new URLSearchParams(window.location.search);
     const urlVendorId = queryParams.get('vendorId');
 

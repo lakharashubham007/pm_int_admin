@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -12,7 +12,7 @@ import vendorProductService from '../../../services/vendorProductService';
 import Loader from '../../../components/Loader';
 import CustomSelect from '../../../components/CustomSelect';
 import PillSlider from '../../../components/PillSlider';
-import { useMasterCategory } from '../../../context/MasterCategoryContext';
+import masterCategoryStore from '../../../store/masterCategoryStore';
 import QuickCreateModal from '../../../components/QuickCreateModal';
 import '../../../components/QuickCreateModal.css';
 import '../../products/Product.css';
@@ -52,7 +52,14 @@ const EditProduct = () => {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState(1);
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory: globalMasterCategory } = mcState;
+
+    useEffect(() => {
+        const unsub = masterCategoryStore.subscribe(setMcState);
+        return unsub;
+    }, []);
+
     const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
     const [masters, setMasters] = useState({
         categories: [],
@@ -531,6 +538,7 @@ const EditProduct = () => {
                                 ]}
                                 value={masterCategory}
                                 onChange={async (newCat) => {
+                                    masterCategoryStore.setMasterCategory(newCat);
                                     setMasterCategory(newCat);
                                     setFormData(prev => ({
                                         ...prev,

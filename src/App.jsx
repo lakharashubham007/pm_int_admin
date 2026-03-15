@@ -1,16 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster, ToastBar, toast } from 'react-hot-toast';
 import { X } from 'lucide-react';
-import MainLayout from './layouts/MainLayout';
-import Dashboard from './pages/Dashboard';
+import authStore from './store/authStore';
+import themeStore from './store/themeStore';
 import Login from './pages/Login';
-import { ThemeProvider } from './context/ThemeContext';
-import { AuthProvider } from './context/AuthContext';
-import { useAuth } from './context/AuthContext';
-import { MasterCategoryProvider } from './context/MasterCategoryContext';
-import { NotificationProvider } from './context/NotificationContext';
-
 import Markup from './routes';
 
 class ErrorBoundary extends React.Component {
@@ -41,13 +35,23 @@ class ErrorBoundary extends React.Component {
 }
 
 function AppContent() {
-  const { token, loading } = useAuth();
+  const [authState, setAuthState] = useState(authStore.getState());
 
-  if (loading) {
-    return <div className="loading-screen">Loading...</div>;
+  useEffect(() => {
+    const unsubscribe = authStore.subscribe(setAuthState);
+    authStore.init();
+    return unsubscribe;
+  }, []);
+
+  if (!authState.initialized) {
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-slate-900">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+    );
   }
 
-  if (!token) {
+  if (!authState.token) {
     return (
       <Routes>
         <Route path="*" element={<Login />} />
@@ -67,10 +71,10 @@ function App() {
         toastOptions={{
           duration: 4000,
           style: {
-            background: 'hsl(var(--card))',
-            color: 'hsl(var(--foreground))',
+            background: 'hsl(var(--card, 0 0% 100%))',
+            color: 'hsl(var(--foreground, 222.2 84% 4.9%))',
             backdropFilter: 'blur(16px)',
-            border: '1px solid hsl(var(--primary) / 0.2)',
+            border: '1px solid hsl(var(--primary, 221.2 83.2% 53.3%) / 0.2)',
             borderRadius: '16px',
             padding: '12px 20px',
             boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
@@ -103,21 +107,7 @@ function App() {
                 {t.type !== 'loading' && (
                   <button
                     onClick={() => toast.dismiss(t.id)}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      padding: '4px',
-                      cursor: 'pointer',
-                      color: 'inherit',
-                      opacity: 0.6,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginLeft: '8px',
-                      borderRadius: '50%'
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = 1}
-                    onMouseLeave={e => e.currentTarget.style.opacity = 0.6}
+                    className="ml-2 p-1 opacity-60 hover:opacity-100 transition-opacity"
                   >
                     <X size={16} />
                   </button>
@@ -127,17 +117,9 @@ function App() {
           </ToastBar>
         )}
       </Toaster>
-      <AuthProvider>
-        <ThemeProvider>
-          <MasterCategoryProvider>
-            <NotificationProvider>
-              <ErrorBoundary>
-                <AppContent />
-              </ErrorBoundary>
-            </NotificationProvider>
-          </MasterCategoryProvider>
-        </ThemeProvider>
-      </AuthProvider>
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
     </Router>
   );
 }

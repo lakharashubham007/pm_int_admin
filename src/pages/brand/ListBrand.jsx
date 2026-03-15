@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import QuickCreateModal from '../../components/QuickCreateModal';
 import PillSlider from '../../components/PillSlider';
-import { useMasterCategory } from '../../context/MasterCategoryContext';
+import masterCategoryStore from '../../store/masterCategoryStore';
 import '../category/Category.css';
 import Loader from '../../components/Loader';
 
@@ -24,8 +24,13 @@ const ListBrand = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isRowsDropdownOpen, setIsRowsDropdownOpen] = useState(false);
 
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
-    const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory } = mcState;
+
+    useEffect(() => {
+        const unsub = masterCategoryStore.subscribe(setMcState);
+        return unsub;
+    }, []);
 
     useEffect(() => {
         fetchBrands();
@@ -113,7 +118,7 @@ const ListBrand = () => {
                                 { value: 'Food', label: 'Food', icon: <UtensilsCrossed size={16} />, activeColor: '#8b5cf6' }
                             ]}
                             value={masterCategory}
-                            onChange={(val) => setMasterCategory(val)}
+                            onChange={(val) => masterCategoryStore.setMasterCategory(val)}
                             themeColor="hsl(var(--primary))"
                         />
                     </div>

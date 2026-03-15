@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const sidebarService = {
     getAllMenus: async () => {
         try {
-            return await apiClient.get('/sidebar/get-menus');
+            return await apiClient.get(`${API_URL}/sidebar/get-menus`);
         } catch (error) {
             throw error;
         }

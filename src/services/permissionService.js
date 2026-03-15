@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const permissionService = {
     getPermissions: async () => {
         try {
-            return await apiClient('/permissions');
+            return await apiClient(`${API_URL}/permissions`);
         } catch (error) {
             throw error;
         }

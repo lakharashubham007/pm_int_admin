@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import authStore from '../../store/authStore';
 import vendorService from '../../services/vendorService';
 import {
     ArrowLeft, Save, Building2, Landmark, User, Zap, Box, Layers, Image as ImageIcon, FileText, ChevronRight, ChevronLeft, MapPin, X, RefreshCw, Plus, Trash2, UploadCloud, File, Shield, Camera, Eye, EyeOff
@@ -101,7 +101,14 @@ const PremiumFileUpload = ({ fileId, label, onChange, previewData, onRemove, acc
 
 const VendorProfile = () => {
     const navigate = useNavigate();
-    const { user, setUser } = useAuth();
+    const [authState, setAuthState] = useState(authStore.getState());
+    const { user } = authState;
+    const setUser = (user) => authStore.setUser(user);
+
+    useEffect(() => {
+        const unsubscribe = authStore.subscribe(setAuthState);
+        return unsubscribe;
+    }, []);
 
     const [activeTab, setActiveTab] = useState(1);
     const [submitting, setSubmitting] = useState(false);

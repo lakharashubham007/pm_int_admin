@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const staffService = {
     getStaff: async (params = {}) => {
         try {
-            return await apiClient.get('/staff', { params });
+            return await apiClient.get(`${API_URL}/staff`, { params });
         } catch (error) {
             throw error;
         }
@@ -11,7 +11,7 @@ const staffService = {
 
     getStaffById: async (id) => {
         try {
-            return await apiClient.get(`/staff/${id}`);
+            return await apiClient.get(`${API_URL}/staff/${id}`);
         } catch (error) {
             throw error;
         }
@@ -19,7 +19,7 @@ const staffService = {
 
     createStaff: async (data) => {
         try {
-            return await apiClient.post('/staff', data);
+            return await apiClient.post(`${API_URL}/staff`, data);
         } catch (error) {
             throw error;
         }
@@ -27,7 +27,7 @@ const staffService = {
 
     updateStaff: async (id, data) => {
         try {
-            return await apiClient.put(`/staff/${id}`, data);
+            return await apiClient.put(`${API_URL}/staff/${id}`, data);
         } catch (error) {
             throw error;
         }
@@ -35,7 +35,7 @@ const staffService = {
 
     deleteStaff: async (id) => {
         try {
-            return await apiClient.delete(`/staff/${id}`);
+            return await apiClient.delete(`${API_URL}/staff/${id}`);
         } catch (error) {
             throw error;
         }

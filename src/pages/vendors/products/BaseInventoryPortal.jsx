@@ -7,7 +7,7 @@ import PillSlider from '../../../components/PillSlider';
 import Loader from '../../../components/Loader';
 import productService from '../../../services/productService';
 import vendorProductService from '../../../services/vendorProductService';
-import { useMasterCategory } from '../../../context/MasterCategoryContext';
+import masterCategoryStore from '../../../store/masterCategoryStore';
 import '../../products/Product.css'; // Reuse product styling
 
 const BaseInventoryPortal = ({ onBack }) => {
@@ -30,8 +30,13 @@ const BaseInventoryPortal = ({ onBack }) => {
     const selectedProductsList = selectedProductsData;
 
     const [masters, setMasters] = useState({ categories: [], subcategories: [], brands: [] });
-    // Global master category (controls sitewide theme + filtering)
-    const { masterCategory, setMasterCategory } = useMasterCategory();
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory } = mcState;
+
+    useEffect(() => {
+        const unsub = masterCategoryStore.subscribe(setMcState);
+        return unsub;
+    }, []);
 
     const [filters, setFilters] = useState({
         search: '',
@@ -291,7 +296,7 @@ const BaseInventoryPortal = ({ onBack }) => {
                         ]}
                         value={filters.masterCategory}
                         onChange={(val) => {
-                            setMasterCategory(val); // Update global theme
+                            masterCategoryStore.setMasterCategory(val); // Update global theme
                             setFilters(prev => ({ ...prev, masterCategory: val, categoryId: '', subcategoryId: '', brandId: '' }));
                         }}
                         themeColor="hsl(var(--primary))"

@@ -7,10 +7,13 @@ import productService from '../../services/productService';
 import Loader from '../../components/Loader';
 import QuickCreateModal from '../../components/QuickCreateModal';
 import PillSlider from '../../components/PillSlider';
-import { useMasterCategory } from '../../context/MasterCategoryContext';
+import masterCategoryStore from '../../store/masterCategoryStore';
 import './Category.css';
 
 const ListCategory = () => {
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory } = mcState;
+
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -21,10 +24,12 @@ const ListCategory = () => {
     const [editSelectedItem, setEditSelectedItem] = useState(null);
     const navigate = useNavigate();
 
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
-    const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
-
     const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL;
+
+    useEffect(() => {
+        const unsub = masterCategoryStore.subscribe(setMcState);
+        return unsub;
+    }, []);
 
     useEffect(() => {
         fetchCategories();
@@ -112,7 +117,7 @@ const ListCategory = () => {
                                 { value: 'Food', label: 'Food', icon: <UtensilsCrossed size={16} />, activeColor: '#8b5cf6' }
                             ]}
                             value={masterCategory}
-                            onChange={(val) => setMasterCategory(val)}
+                             onChange={(val) => masterCategoryStore.setMasterCategory(val)}
                             themeColor="hsl(var(--primary))"
                         />
                     </div>

@@ -1,44 +1,44 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const vendorService = {
     createVendor: async (vendorData) => {
-        return await apiClient.post('/private/vendors/add-vendor', vendorData);
+        return await apiClient.post(`${API_URL}/private/vendors/add-vendor`, vendorData);
     },
 
     getAllVendors: async (params = {}) => {
         const cleanParams = Object.fromEntries(
             Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== '')
         );
-        return await apiClient.get('/private/vendors/all-vendors', { params: cleanParams });
+        return await apiClient.get(`${API_URL}/private/vendors/all-vendors`, { params: cleanParams });
     },
 
 
     getVendorById: async (id) => {
-        return await apiClient.get(`/private/vendors/vendor/${id}`);
+        return await apiClient.get(`${API_URL}/private/vendors/vendor/${id}`);
     },
 
     updateVendor: async (id, vendorData) => {
-        return await apiClient.put(`/private/vendors/update-vendor/${id}`, vendorData);
+        return await apiClient.put(`${API_URL}/private/vendors/update-vendor/${id}`, vendorData);
     },
 
     getSelfVendor: async () => {
-        return await apiClient.get('/private/vendors/self');
+        return await apiClient.get(`${API_URL}/private/vendors/self`);
     },
 
     updateSelfVendor: async (vendorData) => {
-        return await apiClient.put('/private/vendors/self', vendorData);
+        return await apiClient.put(`${API_URL}/private/vendors/self`, vendorData);
     },
 
     verifyKyc: async (kycData) => {
-        return await apiClient.post('/private/vendors/self/kyc-verify', kycData);
+        return await apiClient.post(`${API_URL}/private/vendors/self/kyc-verify`, kycData);
     },
 
     updateVendorStatus: async (id, status) => {
-        return await apiClient.patch(`/private/vendors/update-status/${id}`, { status });
+        return await apiClient.patch(`${API_URL}/private/vendors/update-status/${id}`, { status });
     },
 
     deleteVendor: async (id) => {
-        return await apiClient.delete(`/private/vendors/delete-vendor/${id}`);
+        return await apiClient.delete(`${API_URL}/private/vendors/delete-vendor/${id}`);
     }
 };
 

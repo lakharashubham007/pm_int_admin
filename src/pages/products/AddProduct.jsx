@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -12,7 +12,7 @@ import Loader from '../../components/Loader';
 import CustomSelect from '../../components/CustomSelect';
 import QuickCreateModal from '../../components/QuickCreateModal';
 import PillSlider from '../../components/PillSlider';
-import { useMasterCategory } from '../../context/MasterCategoryContext';
+import masterCategoryStore from '../../store/masterCategoryStore';
 import '../../components/QuickCreateModal.css'; // Added CSS import for the Bulk Modal styling
 import './Product.css';
 
@@ -49,6 +49,9 @@ const unitAwareSort = (a, b) => {
 
 const AddProduct = () => {
     const navigate = useNavigate();
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory: globalMasterCategory } = mcState;
+
     const [showCategoryModal, setShowCategoryModal] = useState(false);
     const [showSubcategoryModal, setShowSubcategoryModal] = useState(false);
     const [showBrandModal, setShowBrandModal] = useState(false);
@@ -59,8 +62,15 @@ const AddProduct = () => {
     const [activeAttributeForValue, setActiveAttributeForValue] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState(1);
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
     const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
+
+    useEffect(() => {
+        return masterCategoryStore.subscribe(setMcState);
+    }, []);
+
+    useEffect(() => {
+        setMasterCategory(globalMasterCategory);
+    }, [globalMasterCategory]);
     const [masters, setMasters] = useState({
         categories: [],
         allSubCategories: [],

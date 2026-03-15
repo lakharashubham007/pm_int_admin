@@ -11,7 +11,7 @@ import productService from '../../services/productService';
 import Loader from '../../components/Loader';
 import CustomSelect from '../../components/CustomSelect';
 import PillSlider from '../../components/PillSlider';
-import { useMasterCategory } from '../../context/MasterCategoryContext';
+import masterCategoryStore from '../../store/masterCategoryStore';
 import QuickCreateModal from '../../components/QuickCreateModal';
 import '../../components/QuickCreateModal.css'; // For bulk modal too
 import './Product.css';
@@ -30,7 +30,7 @@ const unitAwareSort = (a, b) => {
             'g': 1, 'gram': 1, 'grams': 1,
             'mg': 0.001, 'milligram': 0.001,
             'l': 1000, 'liter': 1000, 'litre': 1000, 'liters': 1000,
-            'ml': 1, 'milliliter': 1, 'millilitre': 1,
+            'ml': 1, 'milliliter': 1, 'millitre': 1,
             'pcs': 1, 'pc': 1, 'unit': 1, 'units': 1
         };
 
@@ -49,10 +49,65 @@ const unitAwareSort = (a, b) => {
 const EditProduct = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const [mcState, setMcState] = useState(masterCategoryStore.getState());
+    const { masterCategory: globalMasterCategory } = mcState;
+
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState(1);
-    const { masterCategory: globalMasterCategory } = useMasterCategory();
     const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
+
+    useEffect(() => {
+        return masterCategoryStore.subscribe(setMcState);
+    }, []);
+
+    useEffect(() => {
+        setMasterCategory(globalMasterCategory);
+        // Skip reset on first load since we have initial product data
+        if (!id) {
+            setFormData(prev => ({
+                ...prev,
+                categoryId: '',
+                subCategoryId: '',
+                brandId: '',
+                unitId: '',
+                variants: []
+            }));
+            setSelectedAttributes([]);
+            setSelectedValuesPerAttr({});
+        }
+
+        const fetchMasters = async () => {
+            setIsLoading(true);
+            try {
+                const params = { masterCategory: globalMasterCategory, status: true };
+                const [cat, sub, br, un, tx, attr] = await Promise.all([
+                    productService.getCategories(params),
+                    productService.getSubcategories(params),
+                    productService.getBrands(params),
+                    productService.getUnits(params),
+                    productService.getTaxes(params),
+                    productService.getVariantAttributes(params)
+                ]);
+                setMasters({
+                    categories: cat.categories || [],
+                    allSubCategories: sub.subcategories || [],
+                    subCategories: [],
+                    brands: br.brands || [],
+                    units: un.units || [],
+                    taxes: tx.taxes || [],
+                    variantAttributes: (attr.variantTypes || []).filter(a => a.status),
+                });
+            } catch (e) {
+                console.error("Error fetching masters:", e);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (globalMasterCategory) {
+            fetchMasters();
+        }
+    }, [globalMasterCategory, id]);
     const [masters, setMasters] = useState({
         categories: [],
         allSubCategories: [],
@@ -533,41 +588,8 @@ const EditProduct = () => {
                                     { value: 'Food', label: 'Food', icon: <UtensilsCrossed size={18} />, activeColor: '#8b5cf6' }
                                 ]}
                                 value={masterCategory}
-                                onChange={async (newCat) => {
-                                    setMasterCategory(newCat);
-                                    setFormData(prev => ({
-                                        ...prev,
-                                        categoryId: '',
-                                        subCategoryId: '',
-                                        brandId: '',
-                                        unitId: '',
-                                        variants: []
-                                    }));
-                                    setSelectedAttributes([]);
-                                    setSelectedValuesPerAttr({});
-
-                                    setIsLoading(true);
-                                    try {
-                                        const params = { masterCategory: newCat, status: true };
-                                        const [cat, sub, br, un, tx, attr] = await Promise.all([
-                                            productService.getCategories(params),
-                                            productService.getSubcategories(params),
-                                            productService.getBrands(params),
-                                            productService.getUnits(params),
-                                            productService.getTaxes(params),
-                                            productService.getVariantAttributes(params)
-                                        ]);
-                                        setMasters({
-                                            categories: cat.categories || [],
-                                            allSubCategories: sub.subcategories || [],
-                                            subCategories: [],
-                                            brands: br.brands || [],
-                                            units: un.units || [],
-                                            taxes: tx.taxes || [],
-                                            variantAttributes: (attr.variantTypes || []).filter(a => a.status),
-                                        });
-                                    } catch (e) { console.error(e); } finally { setIsLoading(false); }
-                                }}
+                                onChange={(newCat) => masterCategoryStore.setMasterCategory(newCat)}
+                                themeColor="hsl(var(--primary))"
                             />
                         </div>
 

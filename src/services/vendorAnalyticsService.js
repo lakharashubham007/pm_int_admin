@@ -1,10 +1,10 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const vendorAnalyticsService = {
     getVendorAnalytics: async (id, params = {}) => {
         try {
             const query = new URLSearchParams(params).toString();
-            const response = await apiClient(`/private/orders/vendor-analytics/${id}?${query}`);
+            const response = await apiClient(`${API_URL}/private/orders/vendor-analytics/${id}?${query}`);
             return response;
         } catch (error) {
             console.error(`Failed to fetch analytics for vendor ${id}:`, error);
@@ -13,7 +13,7 @@ const vendorAnalyticsService = {
     },
     getAnalytics: async () => {
         try {
-            const response = await apiClient(`/private/orders/vendor-analytics`);
+            const response = await apiClient(`${API_URL}/private/orders/vendor-analytics`);
             return response;
         } catch (error) {
             console.error('Failed to fetch dashboard analytics:', error);

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
     Menu,
-    Search,
     Bell,
     User,
     Settings,
@@ -13,16 +12,17 @@ import {
     ShoppingBag
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
-import { useAuth } from '../../context/AuthContext';
-import { useNotifications } from '../../context/NotificationContext';
+import authStore from '../../store/authStore';
+import themeStore from '../../store/themeStore';
+import notificationStore from '../../store/notificationStore';
 import { getImageUrl, getInitials } from '../../utils/imageHelper';
 import './Header.css';
 
 const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
-    const { theme, toggleTheme } = useTheme();
-    const { logout, user } = useAuth();
-    const { notifications, unreadCount, markAllAsRead } = useNotifications();
+    const [authState, setAuthState] = useState(authStore.getState());
+    const [themeState, setThemeState] = useState(themeStore.getState());
+    const [notifState, setNotifState] = useState(notificationStore.getState());
+    
     const navigate = useNavigate();
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
@@ -30,6 +30,10 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
     const profileRef = useRef(null);
 
     useEffect(() => {
+        const unsubAuth = authStore.subscribe(setAuthState);
+        const unsubTheme = themeStore.subscribe(setThemeState);
+        const unsubNotif = notificationStore.subscribe(setNotifState);
+        
         const handleClickOutside = (event) => {
             if (notificationRef.current && !notificationRef.current.contains(event.target)) {
                 setShowNotifications(false);
@@ -40,8 +44,17 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
         };
 
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () => {
+            unsubAuth();
+            unsubTheme();
+            unsubNotif();
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
+
+    const user = authState.user;
+    const theme = themeState.theme;
+    const { notifications, unreadCount } = notifState;
 
     const handleNotificationClick = (n) => {
         setShowNotifications(false);
@@ -54,16 +67,12 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
                 <button className="icon-button menu-toggle" onClick={toggleSidebar}>
                     {isSidebarCollapsed ? <X size={20} /> : <Menu size={20} />}
                 </button>
-                <div className="search-wrapper">
-                    <Search size={18} className="search-icon" />
-                    <input type="text" placeholder="Search for products, orders or customers..." />
-                </div>
             </div>
 
             <div className="header-right">
                 <button
                     className="icon-button theme-toggle"
-                    onClick={toggleTheme}
+                    onClick={() => themeStore.toggleTheme()}
                     title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
                 >
                     {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
@@ -74,7 +83,7 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
                         className="icon-button"
                         onClick={() => {
                             setShowNotifications(!showNotifications);
-                            if (!showNotifications) markAllAsRead();
+                            if (!showNotifications) notificationStore.markAllAsRead();
                         }}
                     >
                         <Bell size={20} />
@@ -85,7 +94,7 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
                         <div className="notification-dropdown fade-in">
                             <div className="dropdown-header">
                                 <h3>Notifications</h3>
-                                <button className="text-button" onClick={markAllAsRead}>Mark all as read</button>
+                                <button className="text-button" onClick={() => notificationStore.markAllAsRead()}>Mark all as read</button>
                             </div>
                             <div className="notification-list">
                                 {notifications.length > 0 ? (
@@ -137,11 +146,6 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
                         <div className="user-info">
                             <span className="user-name">{user?.name || 'Guest'}</span>
                             <span className="user-role">{user?.role || 'User'}</span>
-                            {user?.userType === 'vendor' && user?.businessName && (
-                                <span style={{ fontSize: '0.7rem', color: 'hsl(var(--muted-foreground))', opacity: 0.7, fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 120 }}>
-                                    {user.businessName}
-                                </span>
-                            )}
                         </div>
                         <ChevronDown size={14} className={`chevron ${showProfileMenu ? 'rotate' : ''}`} />
                     </button>
@@ -191,7 +195,7 @@ const Header = ({ isSidebarCollapsed, toggleSidebar }) => {
                              </button>
 
                             <div className="dropdown-divider"></div>
-                            <button className="dropdown-item logout-btn" onClick={logout}>
+                            <button className="dropdown-item logout-btn" onClick={() => authStore.logout()}>
                                 <LogOut size={16} /> Logout
                             </button>
                         </div>

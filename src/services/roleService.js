@@ -1,9 +1,9 @@
-import apiClient from './apiClient';
+import apiClient, { API_URL } from './apiClient';
 
 const roleService = {
     getRoles: async () => {
         try {
-            return await apiClient.get('/roles');
+            return await apiClient.get(`${API_URL}/roles`);
         } catch (error) {
             throw error;
         }
@@ -11,7 +11,7 @@ const roleService = {
 
     getRoleById: async (id) => {
         try {
-            return await apiClient.get(`/roles/${id}`);
+            return await apiClient.get(`${API_URL}/roles/${id}`);
         } catch (error) {
             throw error;
         }
@@ -19,7 +19,7 @@ const roleService = {
 
     createRole: async (data) => {
         try {
-            return await apiClient.post('/roles', data);
+            return await apiClient.post(`${API_URL}/roles`, data);
         } catch (error) {
             throw error;
         }
@@ -27,7 +27,7 @@ const roleService = {
 
     updateRole: async (id, data) => {
         try {
-            return await apiClient.put(`/roles/${id}`, data);
+            return await apiClient.put(`${API_URL}/roles/${id}`, data);
         } catch (error) {
             throw error;
         }
@@ -35,7 +35,7 @@ const roleService = {
 
     deleteRole: async (id) => {
         try {
-            return await apiClient.delete(`/roles/${id}`);
+            return await apiClient.delete(`${API_URL}/roles/${id}`);
         } catch (error) {
             throw error;
         }

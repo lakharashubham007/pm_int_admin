@@ -35,7 +35,7 @@
   --shadow-premium: 0 10px 40px -15px rgba(0, 0, 0, 0.4);
 }
 
-.light-theme {
+.light {
   /* Schola Palette - Light & Welcoming */
   --background: 0 0% 100%; /* Pure White Base */
   --foreground: 224 64% 15%;
