@@ -29,7 +29,7 @@ apiClient.interceptors.response.use(
     },
     (error) => {
         const message = error.response?.data?.message || error.response?.data?.error || 'Something went wrong';
-        
+
         // Handle 401 globally
         if (error.response?.status === 401) {
             // Optional: logout logic
@@ -38,9 +38,9 @@ apiClient.interceptors.response.use(
         const customError = new Error(message);
         customError.status = error.response?.status;
         customError.data = error.response?.data;
-        
+
         console.error(`[API ERROR] ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, message);
-        
+
         return Promise.reject(customError);
     }
 );

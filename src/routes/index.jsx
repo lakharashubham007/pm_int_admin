@@ -14,29 +14,9 @@ import EditEmployee from "../pages/employee/EditEmployee";
 import AccessControl from "../pages/AccessControl";
 import Profile from "../pages/Profile";
 
-import ListProducts from "../pages/products/ListProducts";
-import AddProduct from "../pages/products/AddProduct";
-import EditProduct from "../pages/products/EditProduct";
-import MasterManagement from "../pages/masters/MasterManagement";
 import ListCategory from "../pages/category/ListCategory";
 import CreateCategory from "../pages/category/CreateCategory";
 import EditCategory from "../pages/category/EditCategory";
-import ListSubcategory from "../pages/subcategory/ListSubcategory";
-import ListBrand from "../pages/brand/ListBrand";
-import ListUnit from "../pages/unit/ListUnit";
-import ListTax from "../pages/tax/ListTax";
-import ListVariantAttribute from "../pages/variant/ListVariantAttribute";
-import ListVariantValue from "../pages/variant/ListVariantValue";
-import ListVendor from "../pages/vendors/ListVendor";
-import VendorAnalytics from "../pages/vendors/VendorAnalytics";
-import AddVendor from "../pages/vendors/AddVendor";
-import EditVendor from "../pages/vendors/EditVendor";
-
-import VendorAddProduct from "../pages/vendors/products/VendorAddProduct";
-import VendorProductList from "../pages/vendors/products/VendorProductList";
-import VendorEditProduct from "../pages/vendors/products/VendorEditProduct";
-import VendorOrders from "../pages/vendors/orders/VendorOrders";
-
 import CMSPage from "../pages/CMS/CMSPage";
 import HeroSection from "../pages/CMS/HeroSection";
 import AboutSection from "../pages/CMS/AboutSection";
@@ -74,32 +54,10 @@ const Markup = () => {
         { url: "roles/get-roles", component: <AccessControl /> }, // Compatibility
         { url: "roles/create-role", component: <AccessControl /> }, // Compatibility
 
-        // Products
-        { url: "products/list-products", component: <ListProducts /> },
-        { url: "products/add-product", component: <AddProduct /> },
-        { url: "products/edit-product/:id", component: <EditProduct /> },
-        { url: "products/master-management", component: <MasterManagement /> },
+        // Categories
         { url: "categories", component: <ListCategory /> },
         { url: "categories/create-category", component: <CreateCategory /> },
         { url: "categories/edit-category/:id", component: <EditCategory /> },
-        { url: "subcategories", component: <ListSubcategory /> },
-        { url: "brands", component: <ListBrand /> },
-        { url: "units", component: <ListUnit /> },
-        { url: "taxes", component: <ListTax /> },
-        { url: "variants", component: <ListVariantAttribute /> },
-        { url: "variants/values/:attributeId", component: <ListVariantValue /> },
-
-        // Vendors
-        { url: "vendors/list-vendors", component: <ListVendor /> },
-        { url: "vendors/analytics/:id", component: <VendorAnalytics /> },
-        { url: "vendors/add-vendor", component: <AddVendor /> },
-        { url: "vendors/edit-vendor/:id", component: <EditVendor /> },
-        { url: "vendors/products/add", component: <VendorAddProduct /> },
-        { url: "vendors/products/list", component: <VendorProductList /> },
-        { url: "vendors/products/list/:vendorId", component: <VendorProductList /> },
-        { url: "vendors/products/edit/:id", component: <VendorEditProduct /> },
-        { url: "vendors/orders", component: <VendorOrders /> },
-        { url: "orders", component: <VendorOrders /> },
 
         // CMS
         { url: "cms", component: <CMSPage /> },

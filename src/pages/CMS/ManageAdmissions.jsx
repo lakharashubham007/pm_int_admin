@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-    FileText, Trash2, CheckCircle, Clock, X, Eye,
+import { 
+    FileText, Trash2, CheckCircle, Clock, X, Eye, 
     Calendar, User, Phone, Mail, MapPin, GraduationCap,
     ChevronLeft, ChevronRight, ChevronDown, Search, Filter, MoreVertical
 } from 'lucide-react';
@@ -119,18 +119,18 @@ const ManageAdmissions = () => {
                     <div className="custom-limit-selector">
                         <span className="selector-label">Show</span>
                         <div className="stylish-dropdown-container">
-                            <button
+                            <button 
                                 className={`stylish-dropdown-trigger ${isLimitDropdownOpen ? 'active' : ''}`}
                                 onClick={() => setIsLimitDropdownOpen(!isLimitDropdownOpen)}
                             >
                                 {pagination.limit}
                                 <ChevronDown size={14} className={`dropdown-arrow ${isLimitDropdownOpen ? 'rotated' : ''}`} />
                             </button>
-
+                            
                             {isLimitDropdownOpen && (
                                 <div className="stylish-dropdown-menu">
                                     {[10, 20, 50, 100].map(val => (
-                                        <button
+                                        <button 
                                             key={val}
                                             className={`dropdown-option ${pagination.limit === val ? 'selected' : ''}`}
                                             onClick={() => {
@@ -205,7 +205,7 @@ const ManageAdmissions = () => {
                                 </div>
 
                                 <div className="pagination-controls">
-                                    <button
+                                    <button 
                                         disabled={pagination.currentPage === 1}
                                         onClick={() => fetchAdmissions(pagination.currentPage - 1)}
                                         className="page-btn"
@@ -215,7 +215,7 @@ const ManageAdmissions = () => {
                                     <span className="page-info">
                                         Page <strong>{pagination.currentPage}</strong> of {pagination.totalPages}
                                     </span>
-                                    <button
+                                    <button 
                                         disabled={pagination.currentPage === pagination.totalPages}
                                         onClick={() => fetchAdmissions(pagination.currentPage + 1)}
                                         className="page-btn"
