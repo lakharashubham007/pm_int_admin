@@ -1,64 +1,47 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+import axios from 'axios';
 
-const apiClient = async (endpoint, options = {}) => {
-    const { method = 'GET', body, headers = {}, ...customConfig } = options;
-    const token = localStorage.getItem('token');
+const apiClient = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-    const isFormData = body instanceof FormData;
-    const defaultHeaders = {
-        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        ...headers,
-    };
-
-    const config = {
-        method,
-        headers: defaultHeaders,
-        ...customConfig,
-    };
-
-    if (body) {
-        config.body = isFormData ? body : JSON.stringify(body);
+// Request interceptor for attaching the token
+apiClient.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
+);
 
-    // Ensure endpoint has leading slash
-    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-
-    try {
-        const response = await fetch(`${BASE_URL}${cleanEndpoint}`, config);
-
-        // Handle 401 Unauthorized globally if needed (e.g., auto-logout)
-        if (response.status === 401) {
-             // Optional: localStorage.removeItem('token'); window.location.href = '/login';
+// Response interceptor for standardized error handling
+apiClient.interceptors.response.use(
+    (response) => {
+        return response.data;
+    },
+    (error) => {
+        const message = error.response?.data?.message || error.response?.data?.error || 'Something went wrong';
+        
+        // Handle 401 globally
+        if (error.response?.status === 401) {
+            // Optional: logout logic
         }
 
-        const contentType = response.headers.get('content-type');
-        let data = {};
-
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-        } else {
-            // If it's not JSON, might be HTML error page from proxy/Vite
-            const text = await response.text();
-            if (text.includes('<!DOCTYPE html>')) {
-                throw new Error(`API Error: Received HTML instead of JSON from ${cleanEndpoint}. Check backend status.`);
-            }
-        }
-
-        if (response.ok) {
-            return data;
-        }
-
-        // Throw standardized error from backend message
-        const errorMessage = data.message || data.error || 'Something went wrong';
-        const error = new Error(errorMessage);
-        error.status = response.status;
-        error.data = data;
-        throw error;
-    } catch (err) {
-        console.error(`[API ERROR] ${method} ${cleanEndpoint}:`, err.message);
-        throw err;
+        const customError = new Error(message);
+        customError.status = error.response?.status;
+        customError.data = error.response?.data;
+        
+        console.error(`[API ERROR] ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, message);
+        
+        return Promise.reject(customError);
     }
-};
+);
 
 export default apiClient;

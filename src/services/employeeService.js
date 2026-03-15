@@ -2,28 +2,19 @@ import apiClient from './apiClient';
 
 const employeeService = {
     getEmployees: (params = {}) => {
-        const query = new URLSearchParams(
-            Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== ''))
-        ).toString();
-        return apiClient(`/staff/get-staffs${query ? '?' + query : ''}`);
+        const cleanParams = Object.fromEntries(
+            Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== '')
+        );
+        return apiClient.get('/staff/get-staffs', { params: cleanParams });
     },
 
-    getEmployeeById: (id) => apiClient(`/staff/get-staff/${id}`),
+    getEmployeeById: (id) => apiClient.get(`/staff/get-staff/${id}`),
 
+    createEmployee: (employeeData) => apiClient.post('/staff/create-staff', employeeData),
 
-    createEmployee: (employeeData) => apiClient('/staff/create-staff', {
-        method: 'POST',
-        body: employeeData
-    }),
+    updateEmployee: (id, employeeData) => apiClient.put(`/staff/update-staff/${id}`, employeeData),
 
-    updateEmployee: (id, employeeData) => apiClient(`/staff/update-staff/${id}`, {
-        method: 'PUT',
-        body: employeeData
-    }),
-
-    deleteEmployee: (id) => apiClient(`/staff/delete-staff/${id}`, {
-        method: 'DELETE'
-    })
+    deleteEmployee: (id) => apiClient.delete(`/staff/delete-staff/${id}`)
 };
 
 export default employeeService;

@@ -3,7 +3,7 @@ import apiClient from './apiClient';
 const roleService = {
     getRoles: async () => {
         try {
-            return await apiClient('/roles');
+            return await apiClient.get('/roles');
         } catch (error) {
             throw error;
         }
@@ -11,7 +11,7 @@ const roleService = {
 
     getRoleById: async (id) => {
         try {
-            return await apiClient(`/roles/${id}`);
+            return await apiClient.get(`/roles/${id}`);
         } catch (error) {
             throw error;
         }
@@ -19,10 +19,7 @@ const roleService = {
 
     createRole: async (data) => {
         try {
-            return await apiClient('/roles', {
-                method: 'POST',
-                body: data
-            });
+            return await apiClient.post('/roles', data);
         } catch (error) {
             throw error;
         }
@@ -30,10 +27,7 @@ const roleService = {
 
     updateRole: async (id, data) => {
         try {
-            return await apiClient(`/roles/${id}`, {
-                method: 'PUT',
-                body: data
-            });
+            return await apiClient.put(`/roles/${id}`, data);
         } catch (error) {
             throw error;
         }
@@ -41,9 +35,7 @@ const roleService = {
 
     deleteRole: async (id) => {
         try {
-            return await apiClient(`/roles/${id}`, {
-                method: 'DELETE'
-            });
+            return await apiClient.delete(`/roles/${id}`);
         } catch (error) {
             throw error;
         }

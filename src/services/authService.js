@@ -1,49 +1,29 @@
 import apiClient from './apiClient';
 
 export const login = async (email, password) => {
-    return apiClient('/auth/login', {
-        method: 'POST',
-        body: { email, password }
-    });
+    return apiClient.post('/auth/login', { email, password });
 };
 
 export const getMe = async () => {
-    return apiClient('/auth/me');
+    return apiClient.get('/auth/me');
 };
 
-// Update profile info (name, email, profile image)
-// Accepts FormData (for image upload) or a plain JSON object
 export const updateProfile = async (data) => {
-    return apiClient('/auth/update-profile', {
-        method: 'PUT',
-        body: data
-    });
+    return apiClient.put('/auth/update-profile', data);
 };
 
-// Change password — separate call for better UX
 export const changePassword = async ({ currentPassword, newPassword }) => {
-    return apiClient('/auth/change-password', {
-        method: 'PUT',
-        body: { currentPassword, newPassword }
-    });
+    return apiClient.put('/auth/change-password', { currentPassword, newPassword });
 };
 
 export const deleteProfileImage = async () => {
-    return apiClient('/auth/delete-profile-image', {
-        method: 'DELETE'
-    });
+    return apiClient.delete('/auth/delete-profile-image');
 };
 
 export const vendorLogin = async (email, password) => {
-    return apiClient('/public/vendor-login', {
-        method: 'POST',
-        body: { email, password }
-    });
+    return apiClient.post('/public/vendor-login', { email, password });
 };
 
 export const vendorRegister = async (formData) => {
-    return apiClient('/public/vendor-register', {
-        method: 'POST',
-        body: formData
-    });
+    return apiClient.post('/public/vendor-register', formData);
 };

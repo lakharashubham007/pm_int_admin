@@ -1,12 +1,9 @@
 import apiClient from './apiClient';
 
 const contactService = {
-    getContact: () => apiClient('/contact'),
+    getContact: () => apiClient.get('/contact'),
 
-    updateContact: (data) => apiClient('/contact', {
-        method: 'POST',
-        body: data
-    })
+    updateContact: (data) => apiClient.post('/contact', data)
 };
 
 export default contactService;

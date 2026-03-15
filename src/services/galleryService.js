@@ -3,8 +3,7 @@ import apiClient from './apiClient';
 const galleryService = {
     getGalleryItems: async (params = {}) => {
         try {
-            const query = new URLSearchParams(params).toString();
-            return await apiClient(`/gallery${query ? `?${query}` : ''}`);
+            return await apiClient.get('/gallery', { params });
         } catch (error) {
             throw error;
         }
@@ -12,10 +11,7 @@ const galleryService = {
 
     createGalleryItem: async (formData) => {
         try {
-            return await apiClient('/gallery', {
-                method: 'POST',
-                body: formData
-            });
+            return await apiClient.post('/gallery', formData);
         } catch (error) {
             throw error;
         }
@@ -23,10 +19,7 @@ const galleryService = {
 
     updateGalleryItem: async (id, formData) => {
         try {
-            return await apiClient(`/gallery/${id}`, {
-                method: 'PUT',
-                body: formData
-            });
+            return await apiClient.put(`/gallery/${id}`, formData);
         } catch (error) {
             throw error;
         }
@@ -34,9 +27,7 @@ const galleryService = {
 
     deleteGalleryItem: async (id) => {
         try {
-            return await apiClient(`/gallery/${id}`, {
-                method: 'DELETE'
-            });
+            return await apiClient.delete(`/gallery/${id}`);
         } catch (error) {
             throw error;
         }
@@ -44,9 +35,7 @@ const galleryService = {
 
     toggleStatus: async (id) => {
         try {
-            return await apiClient(`/gallery/${id}/status`, {
-                method: 'PATCH'
-            });
+            return await apiClient.patch(`/gallery/${id}/status`);
         } catch (error) {
             throw error;
         }
