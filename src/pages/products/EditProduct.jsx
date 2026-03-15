@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -213,8 +213,8 @@ const EditProduct = () => {
 
                 if (p.images) {
                     setPreviews({
-                        thumbnail: p.images.thumbnail ? `${import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000'}/${p.images.thumbnail}` : '',
-                        gallery: p.images.gallery ? p.images.gallery.map(g => `${import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000'}/${g}`) : []
+                        thumbnail: p.images.thumbnail ? `${import.meta.env.VITE_IMAGE_API_URL}/${p.images.thumbnail}` : '',
+                        gallery: p.images.gallery ? p.images.gallery.map(g => `${import.meta.env.VITE_IMAGE_API_URL}/${g}`) : []
                     });
                 }
             } catch (error) {

@@ -40,7 +40,12 @@ import VendorOrders from "../pages/vendors/orders/VendorOrders";
 import CMSPage from "../pages/CMS/CMSPage";
 import HeroSection from "../pages/cms/HeroSection";
 import AboutSection from "../pages/cms/AboutSection";
+import GallerySection from "../pages/cms/GallerySection";
+import ContactSection from "../pages/cms/ContactSection";
+import ManageFacilities from "../pages/cms/ManageFacilities";
+import ManageAdmissions from "../pages/cms/ManageAdmissions";
 import Settings from "../pages/settings/Settings";
+import ComingSoon from "../pages/ComingSoon";
 
 
 /// Error Pages (Stubs for now)
@@ -100,7 +105,15 @@ const Markup = () => {
         { url: "cms", component: <CMSPage /> },
         { url: "cms/hero", component: <HeroSection /> },
         { url: "cms/about", component: <AboutSection /> },
+        { url: "cms/gallery", component: <GallerySection /> },
+        { url: "cms/facilities", component: <ManageFacilities /> },
+        { url: "cms/admissions", component: <ManageAdmissions /> },
+        { url: "cms/contact", component: <ContactSection /> },
 
+
+        // Programs (Coming Soon)
+        { url: "programs/list", component: <ComingSoon title="Programs List" /> },
+        { url: "programs/add", component: <ComingSoon title="Add New Program" /> },
 
         // Settings
         { url: "settings", component: <Settings /> },

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Search, Edit3, Trash2, LayoutGrid, Layers, Filter, MoreVertical, RefreshCw, ChevronLeft, ChevronRight, ChevronDown, ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -24,7 +24,7 @@ const ListCategory = () => {
     const { masterCategory: globalMasterCategory } = useMasterCategory();
     const [masterCategory, setMasterCategory] = useState(globalMasterCategory);
 
-    const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000';
+    const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL;
 
     useEffect(() => {
         fetchCategories();

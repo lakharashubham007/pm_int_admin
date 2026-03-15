@@ -44,7 +44,7 @@ const MasterManagement = () => {
         tabsRef.current.scrollLeft = scrollLeft - walk;
     };
 
-    const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000';
+    const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL;
 
     const masters = [
         { name: 'Category', icon: LayoutGrid, count: 0, color: 'var(--primary)', plural: 'Categories' },

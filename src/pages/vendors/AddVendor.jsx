@@ -261,7 +261,7 @@ const AddVendor = ({ isSelfProfile = false }) => {
                         setCustomDocuments(v.customDocuments || []);
 
                         const existingPreviews = {};
-                        if (v.profileImage) existingPreviews.profileImage = `${import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000'}/${v.profileImage}`;
+                        if (v.profileImage) existingPreviews.profileImage = `${import.meta.env.VITE_IMAGE_API_URL}/${v.profileImage}`;
                         setPreviews(existingPreviews);
                     }
                 } catch (error) {

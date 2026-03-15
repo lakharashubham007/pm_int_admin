@@ -6,7 +6,7 @@ import {
     ShoppingCart, Tags, FileText, Package, Percent,
     Layers, Briefcase, Bell, BarChart2, Star, Truck,
     AlertCircle, FileStack, Home, Grid, Scale, Network, Bookmark, X,
-    BookOpen, UserPlus, Image, Building
+    BookOpen, UserPlus, Image, Building, Phone, Sparkles
 } from 'lucide-react';
 import './Sidebar.css';
 
@@ -71,6 +71,8 @@ const ICON_MAP = {
     'Image': Image,
     'Building': Building,
     'ShieldCheck': ShieldCheck,
+    'Phone': Phone,
+    'Sparkles': Sparkles,
 };
 
 const renderIcon = (iconStyle) => {
@@ -162,7 +164,7 @@ const Sidebar = ({ isCollapsed, isMobile, closeSidebar }) => {
                         <div key={header._id} className="menu-group">
                             {!isCollapsed && <h4 className="group-title">{header.title}</h4>}
                             <ul className="menu-list">
-                                {groupItems.map((item) => {
+                                {groupItems.filter(m => m.title !== 'Admissions').map((item) => {
                                     const hasSubmenu = item.content && item.content.length > 0;
                                     const isExpanded = expandedGroups[item._id];
 
@@ -198,6 +200,15 @@ const Sidebar = ({ isCollapsed, isMobile, closeSidebar }) => {
                                         </li>
                                     );
                                 })}
+                                {/* Manual Additions within Groups */}
+                                {header.module_id === 'web_mgmt' && (
+                                    <li className={`menu-item ${isActive('cms/admissions') ? 'active' : ''}`}>
+                                        <Link to="/cms/admissions" className="menu-link">
+                                            <span className="menu-icon"><FileText size={20} /></span>
+                                            {!isCollapsed && <span className="menu-label">Admissions</span>}
+                                        </Link>
+                                    </li>
+                                )}
                             </ul>
                         </div>
                     );

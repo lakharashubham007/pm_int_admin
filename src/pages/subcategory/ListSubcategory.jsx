@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Search, Edit3, Trash2, LayoutGrid, Layers, Filter, MoreVertical, RefreshCw, ChevronLeft, ChevronRight, ChevronDown, ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import productService from '../../services/productService';
 import toast from 'react-hot-toast';
@@ -10,7 +10,7 @@ import '../category/Category.css';
 import Loader from '../../components/Loader';
 
 
-const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL;
 
 const ListSubcategory = () => {
     const [subcategories, setSubcategories] = useState([]);

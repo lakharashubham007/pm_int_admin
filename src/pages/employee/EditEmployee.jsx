@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { User, Mail, Lock, Shield, ArrowLeft, Save, ChevronDown, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
-import staffService from '../../services/staffService';
-import roleService from '../../services/roleService';
+import { staffService, roleService } from '../../services';
 import Loader from '../../components/Loader';
 import './Staff.css';
 

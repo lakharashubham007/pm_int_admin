@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Search, Edit3, Trash2, LayoutGrid, Filter, RefreshCw, ChevronLeft, ChevronRight, ChevronDown, Award, ShoppingCart, UtensilsCrossed } from 'lucide-react';
 
 import productService from '../../services/productService';
@@ -10,7 +10,7 @@ import { useMasterCategory } from '../../context/MasterCategoryContext';
 import '../category/Category.css';
 import Loader from '../../components/Loader';
 
-const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL;
 
 const ListBrand = () => {
     const [brands, setBrands] = useState([]);

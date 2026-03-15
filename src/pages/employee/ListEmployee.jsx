@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Edit, Trash2, Mail, Shield, User, Search, Plus, ChevronLeft, ChevronRight, ChevronDown, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
-import staffService from '../../services/staffService';
+import { staffService } from '../../services';
 import Loader from '../../components/Loader';
 import './Staff.css';
 

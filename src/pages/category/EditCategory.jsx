@@ -36,7 +36,7 @@ const EditCategory = () => {
         addons: []
     });
 
-    const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL || 'http://localhost:5000';
+    const API_BASE_URL = import.meta.env.VITE_IMAGE_API_URL;
 
     useEffect(() => {
         fetchData();

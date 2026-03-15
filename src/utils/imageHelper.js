@@ -8,9 +8,7 @@
  *   - Just a filename:     "foo.jpg"
  */
 
-const BACKEND_URL = import.meta.env.VITE_API_URL
-    ? import.meta.env.VITE_API_URL.replace('/api', '')
-    : 'http://localhost:5000';
+const BACKEND_URL = import.meta.env.VITE_IMAGE_API_URL;
 
 export function getImageUrl(imagePath) {
     if (!imagePath) return null;
@@ -26,8 +24,8 @@ export function getImageUrl(imagePath) {
         return `${BACKEND_URL}${cleanPath}`;
     }
 
-    // Special check for hero or about images (they are in the same folder)
-    if (imagePath.startsWith('hero_') || imagePath.startsWith('about_')) {
+    // Special check for hero, about, or gallery images (they are in the same folder)
+    if (imagePath.startsWith('hero_') || imagePath.startsWith('about_') || imagePath.startsWith('gallery_')) {
         return `${BACKEND_URL}/uploads/hero/${imagePath}`;
     }
 
